@@ -1,6 +1,6 @@
-# Telegram Gym Bro Bot 🏋️‍♂️💬  
+# [Gymmy the gnome](https://t.me/GymmyGnomeBot) 🏋️‍♂️💬  
 
-This repository hosts the source code for **Telegram Gym Bro Bot**, your ultimate workout companion. Designed to help you track exercises, monitor progress, and stay motivated, this bot is built using the [grammY](https://grammy.dev/) framework and leverages MongoDB for session storage.
+This repository hosts the source code for **Telegram [@GymmyGnomeBot](https://t.me/GymmyGnomeBot)**, your ultimate workout companion. Designed to help you track exercises, monitor progress, and stay motivated, this bot is built using the [grammY](https://grammy.dev/) framework and leverages MongoDB for session storage.
 
 ## Features 🚀  
 - **➕ Add Exercises**: Create and track your custom exercises.  
