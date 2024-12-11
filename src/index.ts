@@ -1,43 +1,46 @@
-import { Bot, session } from "grammy";
-import { conversations } from "@grammyjs/conversations";
-import { MongoDBAdapter, ISession } from "@grammyjs/storage-mongodb";
-import mongoose from "mongoose";
+import { Bot, session, webhookCallback } from "grammy";
+import { ISession, MongoDBAdapter } from "@grammyjs/storage-mongodb";
 
-import { Configuration } from "./helpers/Configuration";
 import BaseContext from "./types/BaseContext";
-import addExerciseConversation from "./conversations/addExerciseConversation";
-import startCommand from "./commands/startCommand";
-import addCommand from "./commands/addCommand";
-import listCommand from "./commands/listCommand";
-import helpCommand from "./commands/helpCommand";
-
-import changeExerciseWeightConversation from "./conversations/changeExerciseWeightConversation";
-import defaultCommand from "./commands/defaultCommand";
+import { Configuration } from "./helpers/Configuration";
 import ISessionData from "./types/ISessionData";
-
-import selectExerciseCallback from "./callbackQueries/selectExerciseCallback";
-import changeExerciseWeightCallback from "./callbackQueries/changeExerciseWeightCallback";
-import editExerciseCallback from "./callbackQueries/editExerciseCallback";
-import backFromSelectedExerciseCallback from "./callbackQueries/backFromSelectedExerciseCallback";
-import deleteExerciseCallback from "./callbackQueries/deleteExerciseCallback";
-import listCallback from "./callbackQueries/listCallback";
 import addCallback from "./callbackQueries/addCallback";
+import addCommand from "./commands/addCommand";
+import addExerciseConversation from "./conversations/addExerciseConversation";
+import backFromSelectedExerciseCallback from "./callbackQueries/backFromSelectedExerciseCallback";
+import changeExerciseWeightCallback from "./callbackQueries/changeExerciseWeightCallback";
+import changeExerciseWeightConversation from "./conversations/changeExerciseWeightConversation";
+import { conversations } from "@grammyjs/conversations";
+import defaultCommand from "./commands/defaultCommand";
+import deleteExerciseCallback from "./callbackQueries/deleteExerciseCallback";
+import editExerciseCallback from "./callbackQueries/editExerciseCallback";
+import helpCommand from "./commands/helpCommand";
+import listCallback from "./callbackQueries/listCallback";
+import listCommand from "./commands/listCommand";
+import mongoose from "mongoose";
+import selectExerciseCallback from "./callbackQueries/selectExerciseCallback";
+import startCommand from "./commands/startCommand";
+import { waitUntil } from "@vercel/functions";
 
 async function launch() {
   const cfg = new Configuration();
-  const token = cfg.get('BOT_API_TOKEN');
-  const mongodbConnectionString = cfg.get('MONGODB');
+  const token = cfg.get("BOT_API_TOKEN");
+  const mongodbConnectionString = cfg.get("MONGODB");
 
   await mongoose.connect(mongodbConnectionString);
-  const collection = mongoose.connection.db.collection<ISession>('users');
+  const collection = mongoose.connection.db?.collection<ISession>("users");
 
   const bot = new Bot<BaseContext>(token);
 
-  bot.use(session<ISessionData, BaseContext>({
-    initial: () => ({ exercises: [] }),
-    storage: new MongoDBAdapter({ collection }),
-    getSessionKey: ctx => ctx.from?.id.toString()
-  }));
+  if (collection === undefined) throw new Error("Cannot connect to MongoDB");
+
+  bot.use(
+    session<ISessionData, BaseContext>({
+      initial: () => ({ exercises: [] }),
+      storage: new MongoDBAdapter({ collection }),
+      getSessionKey: (ctx) => ctx.from?.id.toString(),
+    })
+  );
 
   bot.use(conversations());
   bot.use(addExerciseConversation);
@@ -52,13 +55,17 @@ async function launch() {
   bot.callbackQuery(/list/, listCallback);
   bot.callbackQuery(/add/, addCallback);
 
-  bot.command('start', startCommand);
-  bot.command('add', addCommand);
-  bot.command('list', listCommand);
-  bot.command('help', helpCommand);
-  bot.on('msg', defaultCommand);
+  bot.command("start", startCommand);
+  bot.command("add", addCommand);
+  bot.command("list", listCommand);
+  bot.command("help", helpCommand);
+  bot.on("msg", defaultCommand);
 
-  bot.start();
+  return bot;
 }
 
-launch();
+let launchedBot: any;
+
+waitUntil(launch().then((bot) => (launchedBot = bot)));
+
+export default webhookCallback(launchedBot, "https");

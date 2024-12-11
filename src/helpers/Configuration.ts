@@ -1,4 +1,4 @@
-import { config, DotenvParseOutput } from 'dotenv';
+import { DotenvParseOutput, config } from "dotenv";
 
 export interface IConfiguration {
   get(key: string): string;
@@ -11,7 +11,7 @@ export class Configuration implements IConfiguration {
     const { error, parsed } = config();
 
     if (error) {
-      throw new Error('.env file is missing');
+      throw new Error(".env file is missing");
     }
 
     this._parsed = parsed;
