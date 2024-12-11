@@ -1,25 +1,25 @@
 import { Bot, session, webhookCallback } from "grammy";
 import { ISession, MongoDBAdapter } from "@grammyjs/storage-mongodb";
 
-import BaseContext from "../types/BaseContext";
-import { Configuration } from "../helpers/Configuration";
-import ISessionData from "../types/ISessionData";
-import addCallback from "../callbackQueries/addCallback";
-import addCommand from "../commands/addCommand";
-import addExerciseConversation from "../conversations/addExerciseConversation";
-import backFromSelectedExerciseCallback from "../callbackQueries/backFromSelectedExerciseCallback";
-import changeExerciseWeightCallback from "../callbackQueries/changeExerciseWeightCallback";
-import changeExerciseWeightConversation from "../conversations/changeExerciseWeightConversation";
+import BaseContext from "../src/types/BaseContext";
+import { Configuration } from "../src/helpers/Configuration";
+import ISessionData from "../src/types/ISessionData";
+import addCallback from "../src/callbackQueries/addCallback";
+import addCommand from "../src/commands/addCommand";
+import addExerciseConversation from "../src/conversations/addExerciseConversation";
+import backFromSelectedExerciseCallback from "../src/callbackQueries/backFromSelectedExerciseCallback";
+import changeExerciseWeightCallback from "../src/callbackQueries/changeExerciseWeightCallback";
+import changeExerciseWeightConversation from "../src/conversations/changeExerciseWeightConversation";
 import { conversations } from "@grammyjs/conversations";
-import defaultCommand from "../commands/defaultCommand";
-import deleteExerciseCallback from "../callbackQueries/deleteExerciseCallback";
-import editExerciseCallback from "../callbackQueries/editExerciseCallback";
-import helpCommand from "../commands/helpCommand";
-import listCallback from "../callbackQueries/listCallback";
-import listCommand from "../commands/listCommand";
+import defaultCommand from "../src/commands/defaultCommand";
+import deleteExerciseCallback from "../src/callbackQueries/deleteExerciseCallback";
+import editExerciseCallback from "../src/callbackQueries/editExerciseCallback";
+import helpCommand from "../src/commands/helpCommand";
+import listCallback from "../src/callbackQueries/listCallback";
+import listCommand from "../src/commands/listCommand";
 import mongoose from "mongoose";
-import selectExerciseCallback from "../callbackQueries/selectExerciseCallback";
-import startCommand from "../commands/startCommand";
+import selectExerciseCallback from "../src/callbackQueries/selectExerciseCallback";
+import startCommand from "../src/commands/startCommand";
 import { waitUntil } from "@vercel/functions";
 
 async function launch() {
