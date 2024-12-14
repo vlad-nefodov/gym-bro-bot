@@ -6,12 +6,13 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "tsc",
-    "dev": "nodemon ./api/index.ts"
+    "dev": "nodemon ./src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.9",
     "@types/node": "^20.10.2",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
@@ -20,10 +21,11 @@
   "dependencies": {
     "@grammyjs/conversations": "^1.1.2",
     "@grammyjs/storage-mongodb": "^2.4.0",
-    "@vercel/functions": "^1.5.1",
     "dotenv": "^16.3.1",
     "grammy": "^1.19.2",
-    "mongoose": "^8.0.2",
-    "uninstall": "^0.0.0"
+    "mongoose": "^8.0.2"
+  },
+  "engines": {
+    "node": "20.17.0"
   }
 }

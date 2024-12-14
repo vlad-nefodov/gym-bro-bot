@@ -20,7 +20,6 @@ import listCommand from "./commands/listCommand";
 import mongoose from "mongoose";
 import selectExerciseCallback from "./callbackQueries/selectExerciseCallback";
 import startCommand from "./commands/startCommand";
-import { waitUntil } from "@vercel/functions";
 
 async function launch() {
   const cfg = new Configuration();
@@ -61,15 +60,7 @@ async function launch() {
   bot.command("help", helpCommand);
   bot.on("msg", defaultCommand);
 
-  return bot;
+  bot.start();
 }
 
-let launchedBot: any;
-
-waitUntil(launch().then((bot) => (launchedBot = bot)));
-
-export const config = {
-  runtime: "edge",
-};
-
-export default webhookCallback(launchedBot, "https");
+launch();
