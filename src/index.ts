@@ -60,6 +60,9 @@ async function launch() {
   bot.command("help", helpCommand);
   bot.on("msg", defaultCommand);
 
+  process.once("SIGINT", () => bot.stop());
+  process.once("SIGTERM", () => bot.stop());
+
   bot.start();
 }
 
