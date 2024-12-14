@@ -8,13 +8,13 @@ kill_signal = "SIGINT"
 kill_timeout = 5
 
 [processes]
-app = "node ./dist/index.js"
+app = "node ./build/index.js"
 
 # Adjust the NODE_ENV environment variable to suppress the warning
 [build.args]
 NODE_ENV = "production"
 
 [build]
-builder = "heroku/buildpacks:20"
+builder = "heroku/builder:22"
 
 # Simply omitting the whole of the [[services]] section since we are not listening to HTTP.
